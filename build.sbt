@@ -1,0 +1,9 @@
+lazy val root = (project in file(".")).
+  settings(
+    name := "units-of-information",
+    version := "1.0",
+    scalaVersion := "2.11.8",
+    libraryDependencies ++= Seq(
+      "junit" % "junit" % "4.11" % Test
+    )
+  )

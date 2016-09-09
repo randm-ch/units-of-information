@@ -17,23 +17,25 @@ import java.util.stream.Stream;
  *
  * This class provides a way for developers to abstract over
  * <a href="https://en.wikipedia.org/wiki/Units_of_information">Units of Information</a>. An initial value can be
- * created by calling the static {@link #of(double, Unit) of} method, which will return a new UnitsOfInformation object, where
- * the size is correctly calculated from the `amount` and `unit` parameters.
- *
- * While the `amount` is self explanatory, it may not be so clear what number should be passed as `unit`. Here the
- * predefined Units come into play. Let's assume you want to represent 2.5 Kilobytes, here's the code for that:
- *
- * {@code UnitsOfInformation.of(2.5, Unit.KB)}
+ * created by calling the static {@link #of(double, Unit) of} method, which will return a new UnitsOfInformation object,
+ * where the size is correctly calculated from the `amount` and `unit` parameters.
  *
  * This class is immutable, meaning you can not change the internal state once it's set. You're only able to get the
  * value back in the unit you want.
+ *
+ * While the `amount` is self explanatory, it may not be so clear what number should be passed as `unit`. Here the
+ * predefined Units come into play. Let's assume you want to represent 2.5 Kilobytes.
+ *
+ * {@code UnitsOfInformation.of(2.5, Unit.KB)}
+ *
+ * General usage examples are shown below.
  *
  * {@code
  * // Create the UnitsOfInformation object
  * UnitsOfInformation size = UnitsOfInformation.of(250, Unit.MB);
  * // Read in Mebibyte
- * double mebibyte = size.in(Unit.MiB)
- * // Print in Gigabyte (will print "0.25 GB")
+ * size.in(Unit.MiB)
+ * // Will print "0.25 GB"
  * System.out.println(size.format(Unit.GB, "%.2f"))
  * }
  *
@@ -41,11 +43,11 @@ import java.util.stream.Stream;
  *
  * {@code
  * // Create the UnitsOfInformation object
- * UnitsOfInformation size = UnitsOfInformation.of(250000000);
+ * UnitsOfInformation size = UnitsOfInformation.of(250000000L);
  * // Will print "250 MB"
  * System.out.println(size.format(size.unit(), "%.2f"))
  * // Create the UnitsOfInformation object
- * UnitsOfInformation size = UnitsOfInformation.of(2500000000);
+ * UnitsOfInformation size = UnitsOfInformation.of(2500000000L);
  * // Will print "2.5 GB"
  * System.out.println(size.format(size.unit(), "%.2f"))
  * }
@@ -57,7 +59,7 @@ public class UnitsOfInformation implements Serializable {
      */
     private static final int PRECISION = 5;
 
-    // There are two ways of calculating units of information: Decimal and Binary
+    // There are two ways of calculating units of information: decimal and binary
     private static final int NONE = 1;
     private static final int DEC = 1000;
     private static final int BIN = 1024;
@@ -150,7 +152,7 @@ public class UnitsOfInformation implements Serializable {
          * The value is calculated as {@code multiplier * (system ^ exponent)}
          *
          * @param name The long, human readable name of the Unit
-         * @param system The number system to use, use `DEC` (decimal, 10-based) or `BIN` (binary, 2-based) here
+         * @param system The number system, use `DEC` (decimal, 10-based) or `BIN` (binary, 2-based) here
          * @param exponent The system is raised to the power of this value to calculate the Unit value
          * @param multiplier Set this to `B.value` if this unit is calculated in Bytes
          */
@@ -187,10 +189,10 @@ public class UnitsOfInformation implements Serializable {
      * Factory method for the UnitsOfInformation class, to have a more sophisticated API.
      *
      * {@code
-     * // Create a UnitsOfInformation object representing 2500 KB
-     * UnitsOfInformation size = UnitsOfInformation.of(2.5, Unit.MB);
+     * // Create a UnitsOfInformation object representing 2.5 MB
+     * UnitsOfInformation.of(2.5, Unit.MB);
      * // Create a UnitsOfInformation object representing 1024 Bit
-     * UnitsOfInformation size = UnitsOfInformation.of(1024);
+     * UnitsOfInformation.of(1024);
      * }
      *
      * @param amount The amount of Units to represent (must be greater than zero)
@@ -202,8 +204,8 @@ public class UnitsOfInformation implements Serializable {
         if(Double.isInfinite(amount)) throw new IllegalArgumentException("Amount can not be infinite.");
 
         // Recursive inner function to map the `amount` and `unit` in case the `amount` is not an integer. This is
-        // required because we want to make sure the `amount` argument does not divide the `unit` so much that it ends
-        // up being a fraction of a Bit. In that case, we would throw an `IllegalArgumentException`
+        // required because we want to make sure that `amount` and `unit` combined doesn't result in a fraction of a
+        // Bit. In that case, we would throw an `IllegalArgumentException`
         Recursive<BiFunction<Double, Unit, UnitsOfInformation>> inner = new Recursive<>();
         inner.func = (Double d, Unit u) -> {
             if(isInteger(d)) {
@@ -220,12 +222,26 @@ public class UnitsOfInformation implements Serializable {
         return inner.func.apply(amount, unit);
     }
 
+    /**
+     * TODO
+     *
+     * @param system
+     * @param multiplier
+     * @return
+     */
     private static Stream<Unit> getUnit(final int system, final int multiplier) {
         return units.stream()
                 .filter(e -> e.system == system) // Get all Units with the defined number system
                 .filter(e -> e.multiplier == multiplier); // Get all Units with the defined Bit multiplier
     }
 
+    /**
+     * TODO
+     *
+     * @param system
+     * @param multiplier
+     * @return
+     */
     private static Optional<Unit> getUnit(final int system, final int multiplier, final int exponent) {
         return getUnit(system, multiplier)
                 .filter(e -> e.exponent == exponent) // Get Units that have the defined exponent
@@ -260,16 +276,18 @@ public class UnitsOfInformation implements Serializable {
     }
 
     /**
-     * Will find out which Unit is best suited to represent the internal value by dividing the value by the Unit's value
-     * and checking if the result is greater than one, starting with the biggest Unit.
+     * Find out and return the Unit best suited to represent the internal value by dividing the `size` by the Unit's
+     * value and checking if the result is greater than one, starting with the biggest Unit.
+     *
+     * The number system (decimal or binary) is determined automatically.
      *
      * {@code
      * // Create the UnitsOfInformation object
      * UnitsOfInformation size1 = UnitsOfInformation.of(250000000000L);
      * // Return the best Byte Unit (in this case, `Unit.GB`)
-     * Unit unit = size1.unit();
+     * size1.unit();
      * // Return the best Bit Unit (in this case, `Unit.GiB`)
-     * Unit unit = size1.unit(Unit.b);
+     * size1.unit(Unit.b);
      * }
      *
      * @return The Unit best suited to represent this instance's value
@@ -280,9 +298,12 @@ public class UnitsOfInformation implements Serializable {
         // represented with two decimal places in the binary system, which is good enough. Otherwise we use decimal
         boolean decimalOk = isInteger(divide(DEC).multiply(BigDecimal.valueOf(100)).doubleValue());
         boolean binaryOk = isInteger(divide(BIN).multiply(BigDecimal.valueOf(100)).doubleValue());
-        final int system = (!decimalOk && !binaryOk) ? DEC : (decimalOk && binaryOk) ? DEC : (decimalOk) ? DEC : BIN;
+        final int system = (!decimalOk && !binaryOk) ? DEC : (decimalOk) ? DEC : BIN;
 
-        for(Unit current : getUnit(system, unit.multiplier).sorted((u1, u2) -> Integer.compare(u2.exponent, u1.exponent)).collect(Collectors.toList())) {
+        List<Unit> units = getUnit(system, unit.multiplier)
+                .sorted((u1, u2) -> Integer.compare(u2.exponent, u1.exponent))
+                .collect(Collectors.toList());
+        for(Unit current : units) {
             BigDecimal unitValue = divide(current);
             if(unitValue.compareTo(BigDecimal.ONE) >= 0) {
                 return current;
@@ -293,17 +314,17 @@ public class UnitsOfInformation implements Serializable {
     }
 
     /**
-     * Whenever you want to convert this instance to a new unit of information, use this method.
+     * Returns the internal value in the requested Unit.
      *
      * {@code
      * // Create the UnitsOfInformation object
      * UnitsOfInformation size = UnitsOfInformation.of(250, Unit.MB);
      * // Read in Mebibyte
-     * double mebibyte = size.in(Unit.MiB)
+     * size.in(Unit.MiB)
      * }
      *
      * @param unit The requested Unit of information
-     * @return A `double` value representing the UnitsOfInformation's value in the requested Unit of information
+     * @return A `double` value representing the object's `size` in the requested Unit of information
      */
     public double in(Unit unit) {
         return divide(unit).doubleValue();
