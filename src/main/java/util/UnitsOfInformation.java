@@ -36,7 +36,7 @@ import java.util.stream.Stream;
  * // Read in Mebibyte
  * size.in(Unit.MiB)
  * // Will print "0.25 GB"
- * System.out.println(size.format(Unit.GB, "%.2f"))
+ * System.out.println(size.format(Unit.GB, "#.##"))
  * }
  *
  * One practical feature of this class is that you can read the value out with it's best suited Unit.
@@ -45,12 +45,17 @@ import java.util.stream.Stream;
  * // Create the UnitsOfInformation object
  * UnitsOfInformation size = UnitsOfInformation.of(250000000L);
  * // Will print "250 MB"
- * System.out.println(size.format(size.unit(), "%.2f"))
+ * System.out.println(size.format(size.unit(), "#.##"))
  * // Create the UnitsOfInformation object
  * UnitsOfInformation size = UnitsOfInformation.of(2500000000L);
  * // Will print "2.5 GB"
- * System.out.println(size.format(size.unit(), "%.2f"))
+ * System.out.println(size.format(size.unit(), "#.##"))
  * }
+ *
+ * TODO Future improvements:
+ *   - Immutable calculations (#add(other), #subtract(other), #multiply(other), #divide(other))
+ *   - Helper methods (#freeStorageInPercent(total))
+ *   - ...
  */
 public class UnitsOfInformation implements Serializable {
 
@@ -223,11 +228,11 @@ public class UnitsOfInformation implements Serializable {
     }
 
     /**
-     * TODO
+     * Returns a Stream of Units, filtered by the conditions passed as arguments.
      *
-     * @param system
-     * @param multiplier
-     * @return
+     * @param system The system to filter by
+     * @param multiplier The multiplier to filter by
+     * @return A filtered Stream of Units
      */
     private static Stream<Unit> getUnit(final int system, final int multiplier) {
         return units.stream()
@@ -236,11 +241,12 @@ public class UnitsOfInformation implements Serializable {
     }
 
     /**
-     * TODO
+     * Returns an Optional of Unit, filtered by the conditions passed as arguments.
      *
-     * @param system
-     * @param multiplier
-     * @return
+     * @param system The system to filter by
+     * @param multiplier The multiplier to filter by
+     * @param exponent The exponent to filter by
+     * @return An Optional of Unit if the conditions hold, or an empty one
      */
     private static Optional<Unit> getUnit(final int system, final int multiplier, final int exponent) {
         return getUnit(system, multiplier)
@@ -264,7 +270,7 @@ public class UnitsOfInformation implements Serializable {
      * @throws IllegalArgumentException If the `amount` is not greater than zero
      */
     private UnitsOfInformation(BigInteger amount, Unit unit) {
-        if(amount.compareTo(BigInteger.ZERO) <= 0) throw new IllegalArgumentException("Amount must be greater than zero.");
+        if(amount.compareTo(BigInteger.ZERO) < 0) throw new IllegalArgumentException("Amount must be greater than or equal to zero.");
         this.size = amount.multiply(unit.value);
     }
 
