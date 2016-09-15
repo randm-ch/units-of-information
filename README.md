@@ -30,9 +30,9 @@ General usage examples are shown below.
     // Read in Mebibyte
     size in MiB
     // Will print "0.25 GB"
-    println(size format(GB, "#.##"))
+    println(size format(GB, "%.2f"))
     // Will print "250 MB"
-    println(size format "#")
+    println(size format "%.0f")
 
 One practical feature of this class is that you can read the value out with it's best suited Unit.
 
@@ -44,7 +44,7 @@ One practical feature of this class is that you can read the value out with it's
 In Scala you can initialize the `UnitsOfInformation` object with the help of implicit conversions. For this to work, you have to import the implicit class `util.UnitsOfInformation.Implicits`.
 
     // Will print "2.5 GB"
-    (2.5 GB) format "#.#"
+    (2.5 GB) format "%.1f"
     // Returns 2.5
     2500.MB in GB
 
@@ -55,9 +55,9 @@ In Scala you can initialize the `UnitsOfInformation` object with the help of imp
     // Read in Mebibyte
     size.in(Unit.MiB)
     // Will print "0.25 GB"
-    System.out.println(size.format(Unit.GB, "#.##"))
+    System.out.println(size.format(Unit.GB, "%.2f"))
     // Will print "250 MB"
-    System.out.println(size.format("#.##"))
+    System.out.println(size.format("%.2f"))
 
 One practical feature of this class is that you can read the value out with it's best suited Unit.
 

@@ -29,9 +29,9 @@ import Unit._
   *   // Read in Mebibyte
   *   size in MiB
   *   // Will print "0.25 GB"
-  *   println(size format(GB, "#.##"))
+  *   println(size format(GB, "%.2f"))
   *   // Will print "250 MB"
-  *   println(size format "#")
+  *   println(size format "%.0f")
   * }}}
   *
   * One practical feature of this class is that you can read the value out with it's best suited Unit.
@@ -47,7 +47,7 @@ import Unit._
   *
   * {{{
   *   // Will print "2.5 GB"
-  *   (2.5 GB) format "#.#"
+  *   (2.5 GB) format "%.1f"
   *   // Returns 2.5
   *   2500.MB in GB
   * }}}
@@ -141,7 +141,7 @@ class UnitsOfInformation(val size: BigInt) {
   def format(unit: Unit, formatting: String): String =
     formatting.format(in(unit)) + " " + unit.name()
 
-  override def toString: String = "UnitsOfInformation{" + format(unit(), "#.##") + "}"
+  override def toString: String = "UnitsOfInformation{" + format(unit(), "%.2f") + "}"
 
 }
 
