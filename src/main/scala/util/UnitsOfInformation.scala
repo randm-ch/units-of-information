@@ -2,6 +2,56 @@ package util
 
 import Unit._
 
+/** Storage size is the amount of Bits that a certain entity (i.e. a file) takes up in memory or on a disk.
+  *
+  * This class provides a way for developers to abstract over
+  * [[https://en.wikipedia.org/wiki/Units_of_information Units of Information]]. An initial value can be created by
+  * calling the static {{{apply(double, Unit)}}} method, which will return a new `UnitsOfInformation` object, where the
+  * size is correctly calculated from the `amount` and `unit` parameters.
+  *
+  * This class is immutable, meaning you can not change the internal state once it's set. You're only able to get the
+  * value back in the unit you want.
+  *
+  * While the `amount` is self explanatory, it may not be so clear what number should be passed as `unit`. Here the predefined Units come into play. Let's assume you want to represent 2.5 Kilobytes.
+  *
+  * {{{
+  *   // Java
+  *   UnitsOfInformation.apply(2.5, Unit.KB)}
+  *   // Scala (with imported implicits)
+  *   2.5.KB
+  * }}}
+  *
+  * General usage examples are shown below.
+  *
+  * {{{
+  *   // Create the UnitsOfInformation object
+  *   val size = UnitsOfInformation(250, Unit.MB)
+  *   // Read in Mebibyte
+  *   size in MiB
+  *   // Will print "0.25 GB"
+  *   println(size format(GB, "#.##"))
+  *   // Will print "250 MB"
+  *   println(size format "#")
+  * }}}
+  *
+  * One practical feature of this class is that you can read the value out with it's best suited Unit.
+  *
+  * {{{
+  *   // Will return MB
+  *   UnitsOfInformation(250000000L) unit
+  *   // Will return GB
+  *   UnitsOfInformation(2500000000L) unit
+  * }}}
+  *
+  * In Scala you can initialize the `UnitsOfInformation` object with the help of implicit conversions. For this to work, you have to import the implicit class `util.UnitsOfInformation.Implicits`.
+  *
+  * {{{
+  *   // Will print "2.5 GB"
+  *   (2.5 GB) format "#.#"
+  *   // Returns 2.5
+  *   2500.MB in GB
+  * }}}
+  */
 class UnitsOfInformation(val size: BigInt) {
 
   import UnitsOfInformation._
@@ -9,8 +59,7 @@ class UnitsOfInformation(val size: BigInt) {
   if(size < 0)
     throw new IllegalArgumentException("Amount must be greater than or equal to zero.")
 
-  /**
-    * @see [[unit]]
+  /** @see [[unit(unit: Unit): Unit]]
     */
   def unit(): Unit = unit(B)
 
@@ -96,6 +145,8 @@ class UnitsOfInformation(val size: BigInt) {
 
 }
 
+/** Companion object of the [[UnitsOfInformation]] class, holding the static values and methods.
+  */
 object UnitsOfInformation {
 
   /** Floating point precision, used when dividing [[BigDecimal]] numbers to round the result, if necessary. */
@@ -121,17 +172,17 @@ object UnitsOfInformation {
   /** A list of all the available Units */
   val units: List[Unit] = Unit.values().toList
 
-  /** @see [[apply]]
+  /** @see [[apply(amount:Double, unit:Unit)]]
     */
   def apply(amount: Double): UnitsOfInformation = apply(amount, b)
 
   /** Factory method for the UnitsOfInformation class, to have a more sophisticated API.
     *
     * {{{
-    * // Create a UnitsOfInformation object representing 2.5 MB
-    * UnitsOfInformation(2.5, Unit.MB);
-    * // Create a UnitsOfInformation object representing 1024 Bit
-    * UnitsOfInformation(1024);
+    *   // Create a UnitsOfInformation object representing 2.5 MB
+    *   UnitsOfInformation(2.5, Unit.MB);
+    *   // Create a UnitsOfInformation object representing 1024 Bit
+    *   UnitsOfInformation(1024);
     * }}}
     *
     * @param amount The amount of Units to represent (must be greater than zero)
@@ -159,8 +210,7 @@ object UnitsOfInformation {
     inner(amount, unit)
   }
 
-  /**
-    * Returns a List of Units, filtered by the conditions passed as arguments.
+  /** Returns a List of Units, filtered by the conditions passed as arguments.
     *
     * @param system     The system to filter by
     * @param multiplier The multiplier to filter by
@@ -171,8 +221,7 @@ object UnitsOfInformation {
       .filter(_.system == system) // Get all Units with the defined number system
       .filter(_.multiplier == multiplier) // Get all Units with the defined Bit multiplier
 
-  /**
-    * Returns an Optional of Unit, filtered by the conditions passed as arguments.
+  /** Returns an Optional of Unit, filtered by the conditions passed as arguments.
     *
     * @param system     The system to filter by
     * @param multiplier The multiplier to filter by

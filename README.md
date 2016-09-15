@@ -8,7 +8,7 @@
 
 Storage size is the amount of Bits that a certain entity (i.e. a file) takes up in memory or on a disk.
 
-This class provides a way for developers to abstract over [Units of Information](https://en.wikipedia.org/wiki/Units_of_information). An initial value can be created by calling the static `of(double, Unit)`/`apply(double, Unit)` method, which will return a new `UnitsOfInformation` object, where the size is correctly calculated from the `amount` and `unit` parameters.
+This class provides a way for developers to abstract over [Units of Information](https://en.wikipedia.org/wiki/Units_of_information). An initial value can be created by calling the static `apply(double, Unit)` method, which will return a new `UnitsOfInformation` object, where the size is correctly calculated from the `amount` and `unit` parameters.
 
 This class is immutable, meaning you can not change the internal state once it's set. You're only able to get the value back in the unit you want.
 
