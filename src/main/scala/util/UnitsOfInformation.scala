@@ -6,7 +6,7 @@ import Unit._
   *
   * This class provides a way for developers to abstract over
   * [[https://en.wikipedia.org/wiki/Units_of_information Units of Information]]. An initial value can be created by
-  * calling the static {{{apply(double, Unit)}}} method, which will return a new `UnitsOfInformation` object, where the
+  * calling the static `apply(double, Unit)` method, which will return a new `UnitsOfInformation` object, where the
   * size is correctly calculated from the `amount` and `unit` parameters.
   *
   * This class is immutable, meaning you can not change the internal state once it's set. You're only able to get the
@@ -51,6 +51,9 @@ import Unit._
   *   // Returns 2.5
   *   2500.MB in GB
   * }}}
+  *
+  * @param size The internal amount of the UnitsOfInformation object, in Bits
+  * @throws IllegalArgumentException In case the supplied `size` is negative
   */
 class UnitsOfInformation(val size: BigInt) {
 
@@ -59,7 +62,7 @@ class UnitsOfInformation(val size: BigInt) {
   if(size < 0)
     throw new IllegalArgumentException("Amount must be greater than or equal to zero.")
 
-  /** @see [[unit(unit: Unit): Unit]]
+  /** @see [[unit(unit:util\.Unit):util\.Unit*]]
     */
   def unit(): Unit = unit(B)
 
@@ -113,8 +116,7 @@ class UnitsOfInformation(val size: BigInt) {
     */
   def in(unit: Unit): Double = (BigDecimal(size) / BigDecimal(unit.value)).toDouble
 
-  /**
-    * @see [[format]]
+  /** @see [[format(unit:util\.Unit,formatting:String):String*]]
     */
   def format(formatting: String): String = format(unit(), formatting)
 
@@ -172,7 +174,7 @@ object UnitsOfInformation {
   /** A list of all the available Units */
   val units: List[Unit] = Unit.values().toList
 
-  /** @see [[apply(amount:Double, unit:Unit)]]
+  /** @see [[apply(amount:Double,unit:util\.Unit):util\.Unit*]]
     */
   def apply(amount: Double): UnitsOfInformation = apply(amount, b)
 
