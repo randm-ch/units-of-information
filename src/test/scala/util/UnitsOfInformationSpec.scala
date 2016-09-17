@@ -28,6 +28,7 @@ class UnitsOfInformationSpec extends Specification { def is = s2"""
   def e3 = {
     (2.5 * 8 * scala.math.pow(1000, 2) bits) in MB mustEqual 2.5
     250.MB in GB mustEqual 0.25
+    UnitsOfInformation(512000, KiB) in MiB mustEqual 500
   }
 
   def e4 = {
