@@ -16,5 +16,6 @@ lazy val root = (project in file(".")).
         Some("snapshots" at nexus + "snapshots")
       else
         Some("releases"  at nexus + "releases")
-    }
+    },
+    credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
   )
