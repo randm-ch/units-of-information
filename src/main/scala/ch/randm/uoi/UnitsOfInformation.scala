@@ -64,7 +64,7 @@ class UnitsOfInformation(val size: BigInt) {
   if(size < 0)
     throw new IllegalArgumentException("Amount must be greater than or equal to zero.")
 
-  /** @see [[unit(unit:ch.randm.uoi\.Unit):ch.randm.uoi\.Unit*]]
+  /** @see [[unit(unit:ch\.randm\.uoi\.Unit):ch\.randm\.uoi\.Unit*]]
     */
   def unit(): Unit = unit(B)
 
@@ -118,7 +118,7 @@ class UnitsOfInformation(val size: BigInt) {
     */
   def in(unit: Unit): Double = (BigDecimal(size) / BigDecimal(unit.value)).toDouble
 
-  /** @see [[format(unit:ch.randm.uoi\.Unit,formatting:String):String*]]
+  /** @see [[format(unit:ch\.randm\.uoi\.Unit,formatting:String):String*]]
     */
   def format(formatting: String): String = format(unit(), formatting)
 
@@ -176,7 +176,7 @@ object UnitsOfInformation {
   /** A list of all the available Units */
   val units: List[Unit] = Unit.values().toList
 
-  /** @see [[apply(amount:Double,unit:ch.randm.uoi\.Unit):ch.randm.uoi\.Unit*]]
+  /** @see [[apply(amount:Double,unit:ch\.randm\.uoi\.Unit):ch\.randm\.uoi\.Unit*]]
     */
   def apply(amount: Double): UnitsOfInformation = apply(amount, b)
 
