@@ -68,12 +68,11 @@ One practical feature of this class is that you can read the value out with it's
 
 Include this library in your SBT project. For this, add
 
-    resolvers += 
-      "randm.ch Repository" at "https://repo.randm.ch/repositories/maven-releases"
+    resolvers += "randm.ch Repository" at "https://repo.randm.ch/repository/maven-releases"
       
 and
 
-    libraryDependencies += "ch.randm" %% "units-of-information" % "0.2",
+    libraryDependencies += "ch.randm" %% "units-of-information" % "0.2"
 
 ## Future improvements:
  - Immutable calculation methods (add, subtract, multiply, divide, ...)
