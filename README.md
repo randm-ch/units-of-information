@@ -15,7 +15,7 @@ This class is immutable, meaning you can not change the internal state once it's
 While the `amount` is self explanatory, it may not be so clear what number should be passed as `unit`. Here the predefined Units come into play. Let's assume you want to represent 2.5 Kilobytes.
 
     // Java
-    UnitsOfInformation.apply(2.5, Unit.KB)}
+    UnitsOfInformation.apply(2.5, Unit.KB)
     // Scala (with imported implicits)
     2.5.KB
 

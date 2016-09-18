@@ -17,7 +17,7 @@ import Unit._
   *
   * {{{
   *   // Java
-  *   UnitsOfInformation.apply(2.5, Unit.KB)}
+  *   UnitsOfInformation.apply(2.5, Unit.KB)
   *   // Scala (with imported implicits)
   *   2.5.KB
   * }}}
