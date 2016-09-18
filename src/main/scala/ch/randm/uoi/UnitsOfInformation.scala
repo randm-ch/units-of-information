@@ -12,7 +12,8 @@ import Unit._
   * This class is immutable, meaning you can not change the internal state once it's set. You're only able to get the
   * value back in the unit you want.
   *
-  * While the `amount` is self explanatory, it may not be so clear what number should be passed as `unit`. Here the predefined Units come into play. Let's assume you want to represent 2.5 Kilobytes.
+  * While the `amount` is self explanatory, it may not be so clear what number should be passed as `unit`. Here the
+  * predefined Units come into play. Let's assume you want to represent 2.5 Kilobytes.
   *
   * {{{
   *   // Java
@@ -43,7 +44,8 @@ import Unit._
   *   UnitsOfInformation(2500000000L) unit
   * }}}
   *
-  * In Scala you can initialize the `UnitsOfInformation` object with the help of implicit conversions. For this to work, you have to import the implicit class `util.UnitsOfInformation.Implicits`.
+  * In Scala you can initialize the `UnitsOfInformation` object with the help of implicit conversions. For this to work,
+  * you have to import the implicit class [[ch.randm.uoi.UnitsOfInformation.Implicits]].
   *
   * {{{
   *   // Will print "2.5 GB"
@@ -62,7 +64,7 @@ class UnitsOfInformation(val size: BigInt) {
   if(size < 0)
     throw new IllegalArgumentException("Amount must be greater than or equal to zero.")
 
-  /** @see [[unit(unit:util\.Unit):util\.Unit*]]
+  /** @see [[unit(unit:ch.randm.uoi\.Unit):ch.randm.uoi\.Unit*]]
     */
   def unit(): Unit = unit(B)
 
@@ -116,7 +118,7 @@ class UnitsOfInformation(val size: BigInt) {
     */
   def in(unit: Unit): Double = (BigDecimal(size) / BigDecimal(unit.value)).toDouble
 
-  /** @see [[format(unit:util\.Unit,formatting:String):String*]]
+  /** @see [[format(unit:ch.randm.uoi\.Unit,formatting:String):String*]]
     */
   def format(formatting: String): String = format(unit(), formatting)
 
@@ -174,7 +176,7 @@ object UnitsOfInformation {
   /** A list of all the available Units */
   val units: List[Unit] = Unit.values().toList
 
-  /** @see [[apply(amount:Double,unit:util\.Unit):util\.Unit*]]
+  /** @see [[apply(amount:Double,unit:ch.randm.uoi\.Unit):ch.randm.uoi\.Unit*]]
     */
   def apply(amount: Double): UnitsOfInformation = apply(amount, b)
 

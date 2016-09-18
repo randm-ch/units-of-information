@@ -2,8 +2,8 @@ import sbt.Keys._
 
 lazy val root = (project in file(".")).
   settings(
+    organization := "ch.randm",
     name := "units-of-information",
-    version := "0.1",
     scalaVersion := "2.11.8",
     scalacOptions in Test ++= Seq("-Yrangepos"),
     autoAPIMappings := true,

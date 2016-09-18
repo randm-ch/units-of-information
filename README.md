@@ -12,8 +12,6 @@ This class provides a way for developers to abstract over [Units of Information]
 
 This class is immutable, meaning you can not change the internal state once it's set. You're only able to get the value back in the unit you want.
 
-Because the class implements `Serializable` it can be stored to and retrieved from any kind of ORM quite easily.
-
 While the `amount` is self explanatory, it may not be so clear what number should be passed as `unit`. Here the predefined Units come into play. Let's assume you want to represent 2.5 Kilobytes.
 
     // Java
@@ -41,7 +39,7 @@ One practical feature of this class is that you can read the value out with it's
     // Will return GB
     UnitsOfInformation(2500000000L) unit
 
-In Scala you can initialize the `UnitsOfInformation` object with the help of implicit conversions. For this to work, you have to import the implicit class `util.UnitsOfInformation.Implicits`.
+In Scala you can initialize the `UnitsOfInformation` object with the help of implicit conversions. For this to work, you have to import the implicit class `ch.randm.uoi.UnitsOfInformation.Implicits`.
 
     // Will print "2.5 GB"
     (2.5 GB) format "%.1f"
