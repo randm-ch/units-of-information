@@ -1,8 +1,8 @@
-package util
+package ch.randm.uoi
 
 import org.specs2.Specification
-import util.Unit._
-import util.UnitsOfInformation.Implicits
+import Unit._
+import UnitsOfInformation.Implicits
 
 class UnitsOfInformationSpec extends Specification { def is = s2"""
 

@@ -1,5 +1,4 @@
 import sbt.Keys._
-import ReleaseTransformations._
 
 lazy val root = (project in file(".")).
   settings(

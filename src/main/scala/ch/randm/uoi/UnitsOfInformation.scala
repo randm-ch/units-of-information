@@ -1,4 +1,4 @@
-package util
+package ch.randm.uoi
 
 import Unit._
 

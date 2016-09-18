@@ -66,6 +66,17 @@ One practical feature of this class is that you can read the value out with it's
     // Will return GB
     UnitsOfInformation.apply(2500000000L).unit()
 
+## Installation
+
+Include this library in your SBT project. For this, add
+
+    resolvers += 
+      "randm.ch Repository" at "https://repo.randm.ch/repositories/maven-releases"
+      
+and
+
+    libraryDependencies += "ch.randm" %% "units-of-information" % "0.2",
+
 ## Future improvements:
  - Immutable calculation methods (add, subtract, multiply, divide, ...)
  - Helper methods (e.g. calculate free storage in percent)

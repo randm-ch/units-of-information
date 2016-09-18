@@ -1,6 +1,6 @@
-package util;
+package ch.randm.uoi;
 
-import static util.UnitsOfInformation.*;
+import static ch.randm.uoi.UnitsOfInformation.*;
 
 import scala.math.BigDecimal;
 import scala.math.BigInt;
