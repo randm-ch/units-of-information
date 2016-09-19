@@ -19,4 +19,4 @@ stages:
 job_all:
   stage: allinone
   script:
-    - sbt clean test
+    - sbt clean coverage test coverageReport coverageOff clean publish
