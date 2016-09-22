@@ -1,4 +1,4 @@
-image: "hseeberger/scala-sbt"
+image: "ruby:2.1"
 
 # disable gitlab cache (the directory /cache is mapped to a physical directory on the server)
 #cache:
@@ -38,6 +38,8 @@ publish:
 
 pages:
   stage: pages
+  script:
+    - echo "Nothing to do here..."
   artifacts:
     paths:
       - public
