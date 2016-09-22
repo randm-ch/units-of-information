@@ -26,7 +26,7 @@ doc:
   stage: allinone
   script:
     - sbt clean doc
-    - cp target/scala-2.11/api public/api
+    - cp -r target/scala-2.11/api public/api
 
 publish:
   stage: allinone
