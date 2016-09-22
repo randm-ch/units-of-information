@@ -1,6 +1,6 @@
 # Units of Information
 
-[![Build Status](https://travis-ci.org/randm-ch/units-of-information.svg?branch=master)](https://travis-ci.org/randm-ch/units-of-information)
+[![build status](https://git.randm.ch/randm/units-of-information/badges/master/build.svg)](https://git.randm.ch/randm/units-of-information/commits/master)
 
 **An immutable Scala/Java class to represent units of information (file size, disk space, memory)**
 

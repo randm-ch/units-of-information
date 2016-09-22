@@ -202,7 +202,7 @@ object UnitsOfInformation {
     // required because we want to make sure that `amount` and `unit` combined doesn't result in a fraction of a
     // Bit. In that case, we would throw an `IllegalArgumentException`
     def inner(d: Double, u: Unit): UnitsOfInformation =
-      if(d isWhole)
+      if(d.isWhole)
         new UnitsOfInformation(u.value * d.longValue())
       else
         // Get the next Unit where the exponent is one lower
