@@ -19,7 +19,7 @@ stages:
 allinone:
   stage: allinone
   script:
-    - sbt clean coverage test coverageReport doc publish
+    - sbt clean coverage test coverageReport coverageOff doc publish
     - cp target/scala-2.11/scoverage-report/index.html public/coverage.html
     - cp -r target/scala-2.11/api public/api
   artifacts:
