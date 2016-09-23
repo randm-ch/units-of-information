@@ -14,14 +14,20 @@ variables:
   SBT_OPTS: "-Dsbt.global.base=/sbt-cache/.sbtboot -Dsbt.boot.directory=/sbt-cache/.boot -Dsbt.ivy.home=/sbt-cache/.ivy"
 
 stages:
-  - allinone
+  - publish
+  - pages
 
 allinone:
-  stage: allinone
+  stage: publish
   script:
-    - sbt clean coverage test coverageReport coverageOff doc publish
+    - sbt clean test publish
+
+pages:
+  stage: pages
+  script:
+    - sbt clean coverage test coverageReport coverageOff doc
     - cp -r target/scala-2.11/scoverage-report public/scoverage-report
     - cp -r target/scala-2.11/api public/api
   artifacts:
-    paths:
-      - public
+      paths:
+        - public
