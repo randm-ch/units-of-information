@@ -82,12 +82,13 @@ class UnitsOfInformation(val size: BigInt) {
     *   size1.unit(b)
     * }}}
     *
+    * @param unit The base unit, either `b` (Bit) or `B` (Byte)
     * @return The Unit best suited to represent this instance's value
     */
   def unit(unit: Unit): Unit = {
-    // Find out if we're using a decimal or binary Unit. This is determined by dividing the Bit count by 1024 (BIN)
-    // and multiplying that number with 100. If the result is a natural number that means that `size` can be
-    // represented with two decimal places in the binary system, which is good enough. Otherwise we use decimal
+    // Find out if we're using a decimal or binary Unit. This is determined by dividing the Bit count by 1024 and
+    // multiplying that number with 100. If the result is a natural number that means that `size` can be represented
+    // with two decimal places in the binary system, which is good enough. Otherwise we use decimal
     val system = (BigDecimal(size) / Decimal * 100).isWhole match {
       case true => Decimal
       case false => (BigDecimal(size) / Binary * 100).isWhole match {
@@ -144,6 +145,65 @@ class UnitsOfInformation(val size: BigInt) {
     */
   def format(unit: Unit, formatting: String): String =
     formatting.format(in(unit)) + " " + unit.name()
+
+  /** Immutable addition of two `UnitsOfInformation` objects.
+    *
+    * {{{
+    *   // returns "5 MB"
+    *   3.MB + 2.MB format "%f"
+    * }}}
+    *
+    * @param that The amount of units of information to add to this one
+    * @return A new `UnitsOfInformation` object with the combined size of both objects
+    */
+  def +(that: UnitsOfInformation) = UnitsOfInformation((size + that.size).toDouble)
+
+  /** Immutable subtraction of two `UnitsOfInformation` objects.
+    *
+    * {{{
+    *   // returns "1 MB"
+    *   3.MB - 2.MB format "%f"
+    * }}}
+    *
+    * @param that The amount of units of information to subtract from this one
+    * @return A new `UnitsOfInformation` object with size `this` minus `that`
+    * @throws IllegalArgumentException If the result is below zero
+    */
+  def -(that: UnitsOfInformation) = UnitsOfInformation((size - that.size).toDouble)
+
+  /** Immutable multiplication of a `UnitsOfInformation` object.
+    *
+    * {{{
+    *   // returns "7.5 MB"
+    *   3.MB * 2.5 format "%.1f"
+    * }}}
+    *
+    * @param multiplier The multiplier
+    * @return A new `UnitsOfInformation` object whose size is `multiplier` times bigger than the original
+    * @throws IllegalArgumentException If the result is below zero or a fraction of a bit
+    */
+  def *(multiplier: Double) = UnitsOfInformation(size.toDouble * multiplier)
+
+  /** Immutable division of a `UnitsOfInformation` object.
+    *
+    * {{{
+    *   // returns "3 MB"
+    *   4.5.MB / 1.5 format "%f"
+    * }}}
+    *
+    * @param divisor The divisor
+    * @return A new `UnitsOfInformation` object whose size is divided by the `divisor`
+    * @throws IllegalArgumentException If the result is below zero or a fraction of a bit
+    * @throws ArithmeticException If the divisor is zero
+    */
+  def /(divisor: Double) = UnitsOfInformation(size.toDouble / divisor)
+
+  override def equals(o: Any): Boolean = o match {
+    case that: UnitsOfInformation => size == that.size
+    case _ => false
+  }
+
+  override def hashCode(): Int = size.toInt
 
   override def toString: String = "UnitsOfInformation{" + format(unit(), "%.2f") + "}"
 
