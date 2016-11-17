@@ -26,8 +26,8 @@ pages:
   stage: pages
   script:
     - sbt clean coverage test coverageReport coverageOff doc
-    - cp -r target/scala-2.11/scoverage-report public/scoverage-report
-    - cp -r target/scala-2.11/api public/api
+    - cp -r target/scala-2.12/scoverage-report public/scoverage-report
+    - cp -r target/scala-2.12/api public/api
   artifacts:
       paths:
         - public
