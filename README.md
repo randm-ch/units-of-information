@@ -61,7 +61,7 @@ Include this library in your SBT project. For this, add
       
 and
 
-    libraryDependencies += "ch.randm" %% "units-of-information" % "0.2"
+    libraryDependencies += "ch.randm" %% "units-of-information" % "0.5"
 
 ## Java Support
 
