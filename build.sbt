@@ -1,25 +1,25 @@
 import sbt.Keys._
 import ReleaseTransformations._
 
-organization := "ch.randm"
-name := "units-of-information"
+name            := "Units Of Information"
+normalizedName  := "units-of-information"
+description     := "An immutable Scala class to represent units of information (file size, disk space, memory)"
+homepage        := Some(new URL("https://git.randm.ch/randm/units-of-information"))
+startYear       := Some(2016)
+organization    := "ch.randm"
+autoAPIMappings := true
 
 // Scala options
-scalaVersion := "2.11.8"
+scalaVersion  := "2.12.0"
 scalacOptions := Seq("-feature", "-unchecked", "-deprecation", "-encoding", "utf8")
 
 // Dependencies
-libraryDependencies += "org.specs2" %% "specs2-core" % "3.8.5" % Test
+libraryDependencies += "org.specs2" %% "specs2-core" % "3.8.6" % Test
 
 // Testing
 scalacOptions in Test ++= Seq("-Yrangepos") // Used by Specs2 string parser
 
-// ScalaDocs
-autoAPIMappings := true
-
-// Publishing
-buildCredentials
-
+// Releasing
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
   inquireVersions,
@@ -27,11 +27,13 @@ releaseProcess := Seq[ReleaseStep](
   setReleaseVersion,
   commitReleaseVersion,
   tagRelease,
-  //publishArtifacts, // Removed, since `git push` triggers build which will push the artifact to the repository
   setNextVersion,
   commitNextVersion,
   pushChanges
 )
+
+// Publishing
+buildCredentials
 
 publishTo := {
   val nexus = "https://repo.randm.ch/repository/maven-"
